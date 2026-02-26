@@ -5,7 +5,7 @@ public class PalindroneCheckerApp{
         String original = "madam";
         String reversed = "";
 
-        // Reverse the string using for loop
+
         for (int i = original.length() - 1; i >= 0; i--) {
             reversed = reversed + original.charAt(i);
         }
@@ -13,7 +13,7 @@ public class PalindroneCheckerApp{
         System.out.println("Original String: " + original);
         System.out.println("Reversed String: " + reversed);
 
-        // Compare using equals()
+
         if (original.equals(reversed)) {
             System.out.println("It is a Palindrome.");
         } else {
