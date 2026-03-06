@@ -1,62 +1,30 @@
-class Node {
-    int data;
-    Node next;
-
-    Node(int data) {
-        this.data = data;
-        this.next = null;
-    }
-}
+import java.util.Scanner;
 
 public class  PalindromeCheckerApp {
 
-    Node head;
+    // Recursive function
+    static boolean isPalindrome(String str, int start, int end) {
 
-    // Add node at end
-    void add(int data) {
-        Node newNode = new Node(data);
+        if (start >= end)   // Base condition
+            return true;
 
-        if (head == null) {
-            head = newNode;
-            return;
-        }
+        if (str.charAt(start) != str.charAt(end))
+            return false;
 
-        Node temp = head;
-        while (temp.next != null) {
-            temp = temp.next;
-        }
-        temp.next = newNode;
-    }
-
-    // Check palindrome
-    boolean isPalindrome() {
-        String str = "";
-        Node temp = head;
-
-        // Convert list to string
-        while (temp != null) {
-            str += temp.data;
-            temp = temp.next;
-        }
-
-        // Reverse string
-        String rev = new StringBuilder(str).reverse().toString();
-
-        return str.equals(rev);
+        return isPalindrome(str, start + 1, end - 1);
     }
 
     public static void main(String[] args) {
-        PalindromeCheckerApp list = new PalindromeCheckerApp();
+        Scanner sc = new Scanner(System.in);
 
-        list.add(1);
-        list.add(2);
-        list.add(3);
-        list.add(2);
-        list.add(1);
+        System.out.print("Enter a string: ");
+        String str = sc.nextLine();
 
-        if (list.isPalindrome())
-            System.out.println("Linked List is Palindrome");
+        if (isPalindrome(str, 0, str.length() - 1))
+            System.out.println("Palindrome");
         else
-            System.out.println("Linked List is Not Palindrome");
+            System.out.println("Not a Palindrome");
+
+        sc.close();
     }
 }
