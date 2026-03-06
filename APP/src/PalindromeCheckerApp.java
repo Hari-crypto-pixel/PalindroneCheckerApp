@@ -1,21 +1,22 @@
 import java.util.Scanner;
 
-// Palindrome logic class (package-private, not public)
-class PalindromeChecker {
+// Class that encapsulates palindrome logic
+class PalindromeChecker{
     private String text;
 
+    // Constructor
     public PalindromeChecker(String text) {
         this.text = text;
     }
 
-    // Method to check palindrome (ignores spaces and case)
+    // Check palindrome (ignores spaces and case)
     public boolean isPalindrome() {
         if (text == null) return false;
 
         // Remove spaces and convert to lowercase
         String processed = text.replaceAll("\\s+", "").toLowerCase();
 
-        // Reverse the string
+        // Reverse the processed string
         String reversed = new StringBuilder(processed).reverse().toString();
 
         // Compare original and reversed
@@ -23,7 +24,7 @@ class PalindromeChecker {
     }
 }
 
-// Main class (must be public; filename should be PalindromeCheckerApp.java)
+// Main class
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
@@ -31,10 +32,8 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        // Create PalindromeChecker object
         PalindromeChecker checker = new PalindromeChecker(input);
 
-        // Check palindrome
         if (checker.isPalindrome()) {
             System.out.println("Palindrome");
         } else {
