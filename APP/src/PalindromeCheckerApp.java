@@ -1,90 +1,64 @@
-import java.util.Scanner;
-import java.util.Deque;
-import java.util.ArrayDeque;
+public class PalindromeCheckerApp{
 
-// Interface for palindrome checking strategy
-interface PalindromeAlgorithm {
-    boolean check(String text);
-}
-
-// Algorithm 1: Iterative using string reversal
-class IterativePalindrome implements PalindromeAlgorithm {
-    public boolean check(String text) {
-        if (text == null) return false;
-        String processed = text.replaceAll("\\s+", "").toLowerCase();
-        String reversed = new StringBuilder(processed).reverse().toString();
-        return processed.equals(reversed);
-    }
-}
-
-// Algorithm 2: Recursive
-class RecursivePalindrome implements PalindromeAlgorithm {
-    public boolean check(String text) {
-        if (text == null) return false;
-        String processed = text.replaceAll("\\s+", "").toLowerCase();
-        return isPalindrome(processed, 0, processed.length() - 1);
+    // Approach 1: Using String reversal
+    public static boolean isPalindromeReverse(String str) {
+        String reversed = new StringBuilder(str).reverse().toString();
+        return str.equals(reversed);
     }
 
-    private boolean isPalindrome(String str, int start, int end) {
-        if (start >= end) return true;
-        if (str.charAt(start) != str.charAt(end)) return false;
-        return isPalindrome(str, start + 1, end - 1);
-    }
-}
-
-// Algorithm 3: Using Deque (two-pointer approach)
-class DequePalindrome implements PalindromeAlgorithm {
-    public boolean check(String text) {
-        if (text == null) return false;
-        String processed = text.replaceAll("\\s+", "").toLowerCase();
-        Deque<Character> deque = new ArrayDeque<>();
-        for (char c : processed.toCharArray()) deque.addLast(c);
-
-        while (deque.size() > 1) {
-            if (deque.removeFirst() != deque.removeLast()) return false;
+    // Approach 2: Using two-pointer technique
+    public static boolean isPalindromeTwoPointer(String str) {
+        int left = 0;
+        int right = str.length() - 1;
+        while (left < right) {
+            if (str.charAt(left) != str.charAt(right)) {
+                return false;
+            }
+            left++;
+            right--;
         }
         return true;
     }
-}
 
-// Main class
-public class PalindromeCheckerApp {
+    // Approach 3: Using recursion
+    public static boolean isPalindromeRecursive(String str) {
+        return isPalindromeRecursiveHelper(str, 0, str.length() - 1);
+    }
+
+    private static boolean isPalindromeRecursiveHelper(String str, int left, int right) {
+        if (left >= right) return true;
+        if (str.charAt(left) != str.charAt(right)) return false;
+        return isPalindromeRecursiveHelper(str, left + 1, right - 1);
+    }
+
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
+        String testString = "abcdefghijklmnopqrstuvwxyzzyxwvutsrqponmlkjihgfedcba"; // large palindrome
 
-        System.out.print("Enter a string: ");
-        String input = sc.nextLine();
+        // Run each algorithm and capture execution time
+        long start, end;
 
-        System.out.println("Choose Palindrome Algorithm:");
-        System.out.println("1 - Iterative (reverse string)");
-        System.out.println("2 - Recursive");
-        System.out.println("3 - Deque / Two-pointer");
+        // Reverse method
+        start = System.nanoTime();
+        boolean result1 = isPalindromeReverse(testString);
+        end = System.nanoTime();
+        long timeReverse = end - start;
 
-        int choice = sc.nextInt();
+        // Two-pointer method
+        start = System.nanoTime();
+        boolean result2 = isPalindromeTwoPointer(testString);
+        end = System.nanoTime();
+        long timeTwoPointer = end - start;
 
-        PalindromeAlgorithm algorithm;
+        // Recursive method
+        start = System.nanoTime();
+        boolean result3 = isPalindromeRecursive(testString);
+        end = System.nanoTime();
+        long timeRecursive = end - start;
 
-        switch (choice) {
-            case 1:
-                algorithm = new IterativePalindrome();
-                break;
-            case 2:
-                algorithm = new RecursivePalindrome();
-                break;
-            case 3:
-                algorithm = new DequePalindrome();
-                break;
-            default:
-                System.out.println("Invalid choice. Using Iterative by default.");
-                algorithm = new IterativePalindrome();
-        }
-
-        if (algorithm.check(input)) {
-            System.out.println("Palindrome");
-        } else {
-            System.out.println("Not a Palindrome");
-        }
-
-        sc.close();
+        // Display results
+        System.out.println("Palindrome check results:");
+        System.out.println("Reverse Method: " + result1 + ", Time: " + timeReverse + " ns");
+        System.out.println("Two-Pointer Method: " + result2 + ", Time: " + timeTwoPointer + " ns");
+        System.out.println("Recursive Method: " + result3 + ", Time: " + timeRecursive + " ns");
     }
 }
