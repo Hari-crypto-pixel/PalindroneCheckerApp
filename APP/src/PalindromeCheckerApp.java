@@ -1,26 +1,49 @@
 import java.util.Scanner;
+import java.util.Deque;
+import java.util.ArrayDeque;
 
-// Class that encapsulates palindrome logic
-class PalindromeChecker{
-    private String text;
+// Interface for palindrome checking strategy
+interface PalindromeAlgorithm {
+    boolean check(String text);
+}
 
-    // Constructor
-    public PalindromeChecker(String text) {
-        this.text = text;
+// Algorithm 1: Iterative using string reversal
+class IterativePalindrome implements PalindromeAlgorithm {
+    public boolean check(String text) {
+        if (text == null) return false;
+        String processed = text.replaceAll("\\s+", "").toLowerCase();
+        String reversed = new StringBuilder(processed).reverse().toString();
+        return processed.equals(reversed);
+    }
+}
+
+// Algorithm 2: Recursive
+class RecursivePalindrome implements PalindromeAlgorithm {
+    public boolean check(String text) {
+        if (text == null) return false;
+        String processed = text.replaceAll("\\s+", "").toLowerCase();
+        return isPalindrome(processed, 0, processed.length() - 1);
     }
 
-    // Check palindrome (ignores spaces and case)
-    public boolean isPalindrome() {
+    private boolean isPalindrome(String str, int start, int end) {
+        if (start >= end) return true;
+        if (str.charAt(start) != str.charAt(end)) return false;
+        return isPalindrome(str, start + 1, end - 1);
+    }
+}
+
+// Algorithm 3: Using Deque (two-pointer approach)
+class DequePalindrome implements PalindromeAlgorithm {
+    public boolean check(String text) {
         if (text == null) return false;
-
-        // Remove spaces and convert to lowercase
         String processed = text.replaceAll("\\s+", "").toLowerCase();
+        Deque<Character> deque = new ArrayDeque<>();
+        for (char c : processed.toCharArray()) deque.addLast(c);
 
-        // Reverse the processed string
-        String reversed = new StringBuilder(processed).reverse().toString();
-
-        // Compare original and reversed
-        return processed.equals(reversed);
+        while (deque.size() > 1) {
+            if (deque.removeFirst() != deque.removeLast()) return false;
+        }
+        return true;
     }
 }
 
@@ -32,9 +55,31 @@ public class PalindromeCheckerApp {
         System.out.print("Enter a string: ");
         String input = sc.nextLine();
 
-        PalindromeChecker checker = new PalindromeChecker(input);
+        System.out.println("Choose Palindrome Algorithm:");
+        System.out.println("1 - Iterative (reverse string)");
+        System.out.println("2 - Recursive");
+        System.out.println("3 - Deque / Two-pointer");
 
-        if (checker.isPalindrome()) {
+        int choice = sc.nextInt();
+
+        PalindromeAlgorithm algorithm;
+
+        switch (choice) {
+            case 1:
+                algorithm = new IterativePalindrome();
+                break;
+            case 2:
+                algorithm = new RecursivePalindrome();
+                break;
+            case 3:
+                algorithm = new DequePalindrome();
+                break;
+            default:
+                System.out.println("Invalid choice. Using Iterative by default.");
+                algorithm = new IterativePalindrome();
+        }
+
+        if (algorithm.check(input)) {
             System.out.println("Palindrome");
         } else {
             System.out.println("Not a Palindrome");
