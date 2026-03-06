@@ -1,27 +1,31 @@
+import java.util.Deque;
+import java.util.ArrayDeque;
+
 public class PalindromeCheckerApp {
     public static void main(String[] args) {
 
-        String str = "HELLO";
+        Deque<Integer> deque = new ArrayDeque<>();
 
-        // Convert string to character array
-        char[] ch = str.toCharArray();
+        // Adding elements
+        deque.add(10);
+        deque.add(20);
+        deque.add(30);
+        deque.add(40);
 
-        System.out.println("Characters in the array:");
+        System.out.println("Deque elements: " + deque);
 
-        // Display characters
-        for(int i = 0; i < ch.length; i++) {
-            System.out.println("ch[" + i + "] = " + ch[i]);
-        }
+        // Access front and rear elements
+        int front = deque.peekFirst();
+        int rear = deque.peekLast();
 
-        // Compare characters
-        System.out.println("\nCharacter Comparisons:");
+        System.out.println("Front element: " + front);
+        System.out.println("Rear element: " + rear);
 
-        for(int i = 0; i < ch.length - 1; i++) {
-            if(ch[i] == ch[i + 1]) {
-                System.out.println(ch[i] + " is equal to " + ch[i + 1]);
-            } else {
-                System.out.println(ch[i] + " is not equal to " + ch[i + 1]);
-            }
+        // Compare front and rear
+        if(front == rear) {
+            System.out.println("Front and Rear elements are equal.");
+        } else {
+            System.out.println("Front and Rear elements are not equal.");
         }
     }
 }
