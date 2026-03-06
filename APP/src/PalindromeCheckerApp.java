@@ -1,31 +1,62 @@
-import java.util.Deque;
-import java.util.ArrayDeque;
+class Node {
+    int data;
+    Node next;
 
-public class PalindromeCheckerApp {
-    public static void main(String[] args) {
+    Node(int data) {
+        this.data = data;
+        this.next = null;
+    }
+}
 
-        Deque<Integer> deque = new ArrayDeque<>();
+public class  PalindromeCheckerApp {
 
-        // Adding elements
-        deque.add(10);
-        deque.add(20);
-        deque.add(30);
-        deque.add(40);
+    Node head;
 
-        System.out.println("Deque elements: " + deque);
+    // Add node at end
+    void add(int data) {
+        Node newNode = new Node(data);
 
-        // Access front and rear elements
-        int front = deque.peekFirst();
-        int rear = deque.peekLast();
-
-        System.out.println("Front element: " + front);
-        System.out.println("Rear element: " + rear);
-
-        // Compare front and rear
-        if(front == rear) {
-            System.out.println("Front and Rear elements are equal.");
-        } else {
-            System.out.println("Front and Rear elements are not equal.");
+        if (head == null) {
+            head = newNode;
+            return;
         }
+
+        Node temp = head;
+        while (temp.next != null) {
+            temp = temp.next;
+        }
+        temp.next = newNode;
+    }
+
+    // Check palindrome
+    boolean isPalindrome() {
+        String str = "";
+        Node temp = head;
+
+        // Convert list to string
+        while (temp != null) {
+            str += temp.data;
+            temp = temp.next;
+        }
+
+        // Reverse string
+        String rev = new StringBuilder(str).reverse().toString();
+
+        return str.equals(rev);
+    }
+
+    public static void main(String[] args) {
+        PalindromeCheckerApp list = new PalindromeCheckerApp();
+
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        list.add(2);
+        list.add(1);
+
+        if (list.isPalindrome())
+            System.out.println("Linked List is Palindrome");
+        else
+            System.out.println("Linked List is Not Palindrome");
     }
 }
